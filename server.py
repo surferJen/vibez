@@ -1,20 +1,32 @@
 "Vibez"
+from pprint import pformat
+import os
+
+import requests
 
 from jinja2 import StrictUndefined
 
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db,
+from model import connect_to_db, db
 
 app = Flask(__name__)
 
-#This secret key is required to use FLask sessions and the debug toolbar
+#This secret key is required to use FLask sesssions and the debug toolbar
 app.secret_key = "youcandothisjen"
 
 #The line of code below will raise an error when you use an undefined variable in Jinja2 (
 # instead of failing)
 app.jina_env.undefined = StrictUndefined
+
+SPOTIFY_TOKEN = os.environ.get('SPOTIFY_TOKEN')
+SPOTIFY_KEY = os.environ.get('SPOTIFY_KEY')
+SPOTIFY_SECRET = os.environ.get('SPOTIFY_SECRET')
+
+SPOTIFY_URL = 
+
+USER_ID = "Your-User-Id-Here"
 
 @app.route("/")
 def index():
@@ -97,6 +109,8 @@ def user_playlists(user_id):
 @app.route("/create")
 def create_playlist():
     """Create playlist by selecting year and choosing BPM"""
+
+
 
     return render_template("create_playlist_page.html")
 

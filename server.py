@@ -26,9 +26,17 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route("/")
 def index():
-    """Homepage"""
+    """Homepage for those not logged in"""
 
     return render_template("homepage.html")
+
+@app.route("/homepageloggedin")
+def homepage_loggedin():
+    """Homepage for those who are logged in"""
+
+    return render_template("homepage_loggedin.html")
+
+
 
 @app.route('/register')
 def register_form():
@@ -81,7 +89,7 @@ def login_process():
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    return redirect(f"/users/{user.user_id}")
+    return redirect("/homepage_loggedin")
 
 @app.route('/logout')
 def logout():
@@ -91,14 +99,14 @@ def logout():
         flash("Logged Out.")
         return redirect("/")
     
-@app.route("/users")  #A route to check out other user's playlists
-def user_list():
-        """Show list of users"""
+# @app.route("/users")  #A route to check out other user's playlists
+# def user_list():
+#         """Show list of users"""
 
-        users = User.query.all()
-        return render_template("user_list.html", users=users)
+#         users = User.query.all()
+#         return render_template("user_list.html", users=users)
     
-@app.route("/users")
+@app.route("/userplaylist")
 def user_playlists(user_id):
     """Show info about user's playlists."""
 
@@ -107,39 +115,38 @@ def create_playlist():
     """Create playlist by selecting genre, danceability, and speechiness"""
 
 
+
     return render_template("create_playlist.html")
 
-# @app.route("/create", methods=['POST'])
-# def create_playlist():
-#     """Save playlist to user personal profile"""
+@app.route("/create", methods=['POST'])
+def created_playlist():
+    """Save playlist to user personal profile"""
 
-# #     genre = request.args.get("genre")
-# #     min_danceability = request.args.get("minDanceability")
-# #     max_danceability = request.args.get("maxDanceability")
-
-
-# #     #save as session so you can later see page of newly generated playlist
-# #     session["genre"] = genre
-# #     session["minimum_danceability"] = min_danceability
-# #     session["maximum_danceability"] = max_danceability
+    genre = request.form.get("genre")
+    min_danceability = request.form.get("minDanceability")
+    max_danceability = request.form.get("maxDanceability")
 
 
-#     #permanently save the generated playlist into database
+    #save as session so you can later see page of newly generated playlist
+    session["genre"] = genre
+    session["minimum_danceability"] = min_danceability
+    session["maximum_danceability"] = max_danceability
+
+    return redirect("/generateplaylist")
+
+#     permanently save the generated playlist into database
 
 
 @app.route("/generateplaylist")
 def generate_playlist():
     #get information input into html page
     
-#     spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], 
-#     session["maximum_danceability"])
-
-    spotify_info = spotify.base_playlist(spotify.generate_token(), 'hip-hop', 0.5, 0.8)
+    spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
 
 
     return render_template("generate_playlist.html", spotify_info = spotify_info)
 
-    #generate playlist based on these search queries
+#     generate playlist based on these search queries
     
 
 

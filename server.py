@@ -11,6 +11,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Song, Playlist
 
+import spotify
+
 app = Flask(__name__)
 
 #This secret key is required to use FLask sesssions and the debug toolbar
@@ -18,15 +20,9 @@ app.secret_key = "youcandothisjen"
 
 #The line of code below will raise an error when you use an undefined variable in Jinja2 (
 # instead of failing)
-app.jina_env.undefined = StrictUndefined
+app.jinja_env.undefined = StrictUndefined
 
-SPOTIFY_TOKEN = os.environ.get('SPOTIFY_TOKEN')
-SPOTIFY_KEY = os.environ.get('SPOTIFY_KEY')
-SPOTIFY_SECRET = os.environ.get('SPOTIFY_SECRET')
 
-SPOTIFY_URL = 
-
-USER_ID = "Your-User-Id-Here"
 
 @app.route("/")
 def index():
@@ -108,11 +104,10 @@ def user_playlists(user_id):
 
 @app.route("/create")
 def create_playlist():
-    """Create playlist by selecting year and choosing BPM"""
+    """Create playlist by selecting genre, danceability, and speechiness"""
 
 
-
-    return render_template("create_playlist_page.html")
+    return render_template("create_playlist.html")
 
 @app.route("/create", methods=['POST'])
 def save_playlist():
@@ -135,19 +130,19 @@ def playlists():
 
 
 
-if __name__ == "__main__"
+if __name__ == "__main__":
 # We have to set debug=True here, since it has to be True at the point
 # that we invoke the DebugToolbarExtension
 
 #Do not debug for demo
-app.debug = True
+        app.debug = True
 
-connect_to_db(app)
+        connect_to_db(app)
 
 #Use the DebugToolbar
-DebugToolbarExtension(app)
+        DebugToolbarExtension(app)
 
-app.run(host="0.0.0.0")
+        app.run(host="0.0.0.0")
 
 
 

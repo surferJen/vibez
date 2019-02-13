@@ -17,7 +17,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(50), nullable=False)
-    lname = db.Coumn(db.String(50), nullable=False)
+    lname = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(60), nullable=False)
     password = db.Column(db.String(50), nullable=False)
 
@@ -41,7 +41,7 @@ class Playlist(db.Model):
         
         return f"<Playlist playlist_id={self.playlist_id} playlist_name = {self.playlist_name}>"
     
-    user = db.relationship("User", backref="playlist")
+    user = db.relationship("User", backref="playlists")
 
     
 class Song(db.Model):
@@ -86,4 +86,5 @@ if __name__ == "__main__":
     from server import app
 
     connect_to_db(app)
+    db.create_all()
     print("Connected to DB.")

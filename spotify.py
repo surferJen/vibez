@@ -39,7 +39,7 @@ def generate_token():
         return tokenJSON["access_token"]
 
 ##AT = ACCESS TOKEN
-def base_playlist(at, genre, min_danceability, max_danceability, min_speechiness, max_speechiness):
+def base_playlist(at, genre, min_danceability, max_danceability):
         #Ok this is the meat an potatoes we will now generate a list of hiphop music based on parameters
         #Note that this would probably be set from the client,but an initial state would need to be accounted for
         headers = {
@@ -53,13 +53,11 @@ def base_playlist(at, genre, min_danceability, max_danceability, min_speechiness
         ##BEGINNING OF URL QUERY PARAMS 4 SPOTIFY
         #all of these parameters can be changed to the parameters being passed through the function
         #this can make the function constimizable
-            ('limit', '25'),
+            ('limit', '50'),
             ('market', 'US'),
             ('seed_genres', genre),
             ('min_danceability', f'{min_danceability}'),
             ('max_danceability', f'{max_danceability}'),
-            ('min_speechiness', f'{min_speechiness}'),
-            ('max_speechiness', f'{max_speechiness}'),
             ('min_popularity', '50'),
 
         )
@@ -69,10 +67,10 @@ def base_playlist(at, genre, min_danceability, max_danceability, min_speechiness
 
         songsJSON = response.json()
         ##Reformatting print statement for readibility
-        print(json.dumps(songsJSON, indent=4, sort_keys=True))
+        return songsJSON
 
 ##Fresh token generates whenever query function is run this may not be performant
-base_playlist(generate_token(), 'hip-hop' ,0.5, 0.8, 0.5, 0.6)
+# base_playlist(generate_token(), 'hip-hop' ,0.5, 0.8)
 
 
 

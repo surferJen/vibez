@@ -1,33 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
   <h1>Generate Your Playlist!</h1>
-  <form action="/create" method="POST">
+  <form action="/create" method='POST'>
 
     
-      <label>Genre
+      <label>Genre</label>
           <input type="text" name="genre" required class="form-control">
-      </label><br>
+      <br>
 
     
-      <label>Minimum Danceability (Scale of 0-1)
+      <label>Minimum Danceability (Scale of 0-1)</label>
           <input type="password" name="minDanceability" required class="form-control">
-      </label><br>
+      <br>
 
     
-      <label>Maximum Danceability (Scale of 0-1)
+      <label>Maximum Danceability (Scale of 0-1)</label>
           <input type="password" name="maxDanceability" required class="form-control">
-      </label><br>
-
-    
-      <label>Minimum Wordiness (Scale of 0-1)
-          <input type="password" name="minWordiness" required class="form-control">
-      </label><br>
-
-    
-      <label>Maximum Wordiness (Scale of 0-1)
-          <input type="password" name="maxWordiness" required class="form-control">
-      </label><br>
-
+      <br>
     
       <input type="submit" value="Create Playlist!" class="btn btn-create">
 

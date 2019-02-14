@@ -34,7 +34,6 @@ class Playlist(db.Model):
 
     playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False )
-    playlist_name = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -49,7 +48,7 @@ class Song(db.Model):
 
     __tablename__ = "songs"
 
-    song_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    track_id = db.Column(db.String(100), primary_key=True)
     track_title = db.Column(db.String(200), nullable=False)
     artist = db.Column(db.String(200), nullable=False)
 
@@ -66,7 +65,7 @@ class SongPlaylist(db.Model):
     __tablename__ = "songs_playlists"
 
     song_playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    song_id = db.Column(db.Integer, db.ForeignKey('songs.song_id'), nullable=False)
+    track_id = db.Column(db.String(100), db.ForeignKey('songs.track_id'), nullable=False)
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'), nullable=False)
 
 def connect_to_db(app):
@@ -75,7 +74,7 @@ def connect_to_db(app):
     #Configure to use our PostgreSQL database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///playlists'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = False
     db.app = app
     db.init_app(app)
 

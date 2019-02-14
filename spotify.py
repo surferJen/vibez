@@ -70,7 +70,7 @@ def base_playlist(at, genre, min_danceability, max_danceability):
         return songsJSON
 
 ##Fresh token generates whenever query function is run this may not be performant
-# print(base_playlist(generate_token(), 'hip-hop' ,'0.5', '0.8'))
+print(base_playlist(generate_token(), 'bluegrass' ,'0', '0.35 '))
 
 
 #available genres in Spotify(typing must be exact): acoustic, afrobeat,

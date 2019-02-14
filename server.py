@@ -9,7 +9,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request, flash, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, User, Song, Playlist
+from model import connect_to_db, db, User, Song, Playlist, SongPlaylist
 
 import spotify
 
@@ -42,7 +42,7 @@ def homepage_loggedin():
 def register_form():
     """Show form for user signup"""
 
-    return render_template("register_form.html")
+    return render_template("register.html")
 
 @app.route('/register', methods=['POST'])
 def register_process():
@@ -53,20 +53,26 @@ def register_process():
     lname = request.form["lname"]
     email = request.form["email"]
     password = request.form["password"]
+
+    user = db.session.query(User).filter(User.email == email).first()
     
-    new_user = User(fname=fname, lname=lname, email=email, password=password)
+    if user:
+            flash("User already exists")
+            redirect("/")
+    else:
+        new_user = User(fname=fname, lname=lname, email=email, password=password)
 
-    db.session.add(new_user)
-    db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
 
-    flash(f"User {fname} has been added.")
-    return redirect(f"/users/{new_user.user_id}")
+        flash(f"User {fname} has been added.")
+        return redirect("/login")
 
 @app.route('/login')
 def login_form():
     """Show login form."""
 
-    return render_template("login_form.html")
+    return render_template("login.html")
 
 @app.route('/login', methods=['POST'])
 def login_process():
@@ -86,6 +92,8 @@ def login_process():
         flash("Incorrect password")
         return redirect("/login")
     
+    #this is the session id in which it determines whether user 
+    #is logged in and is allowed to navigate said pages
     session["user_id"] = user.user_id
 
     flash("Logged in")
@@ -114,9 +122,11 @@ def user_playlists(user_id):
 def create_playlist():
     """Create playlist by selecting genre, danceability, and speechiness"""
 
-
-
-    return render_template("create_playlist.html")
+    if session.get("user_id") is not None:
+        return render_template("create_playlist.html")
+    else:
+        flash("User may create playlist after logging in")
+        return redirect("/")
 
 @app.route("/create", methods=['POST'])
 def created_playlist():
@@ -139,14 +149,39 @@ def created_playlist():
 
 @app.route("/generateplaylist")
 def generate_playlist():
-    #get information input into html page
     
     spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
+    print(spotify_info)
+
+    #store playlist into Playlist database
+    playlist = Playlist(user_id = session["user_id"])
+    db.session.add(playlist)
+    db.session.commit()
+
+    #store songs into Song database and link song with playlist (which links to user)
+    for track in spotify_info["tracks"]:
+        print(len(db.session.query(Song).all()))
+
+        if len(db.session.query(Song).all()) <= 0:
+            song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
+            db.session.add(song)
+            db.session.commit()
+        if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
+            song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
+            db.session.add(song)
+            db.session.commit()
+        songplaylist = SongPlaylist(track_id= track["id"], playlist_id= playlist.playlist_id)
+        db.session.add(songplaylist)
+        db.session.commit()
+
+   
 
 
+
+    #reveal newly generated playlist on generate_playlist.html page based on stored session from user input above
     return render_template("generate_playlist.html", spotify_info = spotify_info)
 
-#     generate playlist based on these search queries
+
     
 
 

@@ -153,19 +153,24 @@ def generate_playlist():
     spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
     print(spotify_info)
 
-    #store playlist into Playlist database
-    playlist = Playlist(user_id = session["user_id"])
-    db.session.add(playlist)
-    db.session.commit()
+    
 
-    #store songs into Song database and link song with playlist (which links to user)
+    #store songs into Song database and song-playlist data into SongPlaylist database
     for track in spotify_info["tracks"]:
-        print(len(db.session.query(Song).all()))
+        playlist = Playlist(user_id=session["user_id"], playlist_image=track["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
+                            playlist_maxdanceability=session["maximum_danceability"])
+        db.session.add(playlist)
+        db.session.commit()
 
+        #if Song database is empty, add generated song as new song in the database 
         if len(db.session.query(Song).all()) <= 0:
             song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
             db.session.add(song)
             db.session.commit()
+        #if a song(s) exists in the database, check to see if there is a match with generated song
+        #and existing song(s) match. If there is no match, add generated song as new song in the database.
+        #Both if statements check to make sure new songs that are added into database do not already
+        #exist in the database.
         if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
             song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
             db.session.add(song)
@@ -176,8 +181,6 @@ def generate_playlist():
 
    
 
-
-
     #reveal newly generated playlist on generate_playlist.html page based on stored session from user input above
     return render_template("generate_playlist.html", spotify_info = spotify_info)
 
@@ -187,7 +190,15 @@ def generate_playlist():
 
 @app.route("/playlists")
 def playlists():
-    """Show list of playlists"""
+    """Show list of user's playlists"""
+
+    if session.get("user_id") is not None:
+        playlists = Playlist.query.filter(Playlist.user_id).order_by('playlist_id').all()
+        return render_template("user_playlists_page.html")
+    else:
+        flash("User may view their playlist after logging in")
+        return redirect("/login")
+
 
     playlist = Playlist.query.order_by('title').all()
     return render_template("playlist.html", playlist=playlist)

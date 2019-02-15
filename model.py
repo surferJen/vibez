@@ -34,6 +34,10 @@ class Playlist(db.Model):
 
     playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False )
+    playlist_image = db.Column(db.String(150), nullable=False)
+    playlist_genre = db.Column(db.String(50), nullable=False)
+    playlist_mindanceability = db.Column(db.String(20), nullable=False)
+    playlist_maxdanceability = db.Column(db.String(20), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

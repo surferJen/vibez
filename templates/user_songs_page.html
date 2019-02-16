@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>Your Playlist has Been Generated!</h1>
+  <h1>Your Playlist!</h1>
 
-  
-  {% for track in spotify_info.tracks %}
+ 
+  {% for track in saved_spotify_info.tracks %}
   <div class = songCard>
     
     <div class = songImage><img src={{ track.album.images[1].url }}>
@@ -32,7 +32,5 @@
     </div>
 
     {% endfor %}
-    
-  
 
 {% endblock %}

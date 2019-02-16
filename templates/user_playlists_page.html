@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h1>Your Playlists!</h1>
+
+{% for playlist in playlists %}
+  <form action="/playlists" method='POST'>
+  <div class = songCard>
+    
+    <div class = playlistImage><img src={{ playlist.playlist_image }}>
+    </div>
+
+    <div class = songBio>
+
+    <div class = playlistid> Playlist id: <input type = "number" name = "playlistId" value = "{{playlist.playlist_id}}">
+    </div>
+
+    <p class = playlistGenre> Genre: {{ playlist.playlist_genre }}
+    </p>
+
+    <p class = minDanceability> Minimum Danceability: {{ playlist.playlist_mindanceability }}
+    </p>
+
+    <p class = maxDanceability> Maximum Danceability: {{ playlist.playlist_maxdanceability }}
+    </p>
+
+    <input type='submit' name="Submit">
+
+    </div>
+
+    </div>
+    </form>
+
+    {% endfor %}
+
+    {% endblock %}

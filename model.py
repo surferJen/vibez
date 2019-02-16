@@ -42,7 +42,7 @@ class Playlist(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
         
-        return f"<Playlist playlist_id={self.playlist_id} playlist_name = {self.playlist_name}>"
+        return f"<Playlist playlist_id={self.playlist_id} playlist_genre = {self.playlist_genre}>"
     
     user = db.relationship("User", backref="playlists")
 
@@ -59,7 +59,7 @@ class Song(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed"""
 
-        return f"<Song song_id={self.song_id} track ={self.track_title} artist = {self.artist}>"
+        return f"<Song song_id={self.track_id} track ={self.track_title} artist = {self.artist}>"
 
     playlists = db.relationship("Playlist", secondary="songs_playlists", backref="songs")
 

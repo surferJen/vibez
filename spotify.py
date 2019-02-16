@@ -70,7 +70,7 @@ def base_playlist(at, genre, min_danceability, max_danceability):
         return songsJSON
 
 ##Fresh token generates whenever query function is run this may not be performant
-print(base_playlist(generate_token(), 'bluegrass' ,'0', '0.35 '))
+# print(base_playlist(generate_token(), 'bluegrass' ,'0', '0.35 '))
 
 
 #available genres in Spotify(typing must be exact): acoustic, afrobeat,
@@ -91,6 +91,34 @@ print(base_playlist(generate_token(), 'bluegrass' ,'0', '0.35 '))
     # show-tunes, singer-songwriter, ska, sleep, songwriter, soul,
     # soundtracks, spanish, study, summer, swedish, synth-pop, tango,
     # techno, trance, trip-hop, turkish, work-out, world-music
+
+def saved_songs(at, track_id):
+        #Ok this is the meat an potatoes we will now generate a list of hiphop music based on parameters
+        #Note that this would probably be set from the client,but an initial state would need to be accounted for
+        headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + at,
+        }
+
+        params = (
+            ##BEGINNING OF URL QUERY PARAMS 4 SPOTIFY
+            #all of these parameters can be changed to the parameters being passed through the function
+            #this can make the function constimizable
+            ('ids', track_id),
+        )
+
+        response = requests.get("https://api.spotify.com/v1/tracks",
+                                headers=headers, params=params)
+
+        songsJSON = response.json()
+        ##Reformatting print statement for readibility
+        return songsJSON
+
+
+print(saved_songs(generate_token(), "45XhKYRRkyeqoW3teSOkCM,7hsulgRNgbyczeAg8tChCB,608a1wIsSd5KzMEqm1O7w3"))
+
+
 
 
 ##TODO MOODPLAYLIST

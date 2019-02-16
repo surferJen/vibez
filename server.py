@@ -153,14 +153,13 @@ def generate_playlist():
     spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
     print(spotify_info)
 
-    
+    playlist = Playlist(user_id=session["user_id"], playlist_image=spotify_info["tracks"][0]["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
+                        playlist_maxdanceability=session["maximum_danceability"])
+    db.session.add(playlist)
+    db.session.commit()
 
     #store songs into Song database and song-playlist data into SongPlaylist database
     for track in spotify_info["tracks"]:
-        playlist = Playlist(user_id=session["user_id"], playlist_image=track["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
-                            playlist_maxdanceability=session["maximum_danceability"])
-        db.session.add(playlist)
-        db.session.commit()
 
         #if Song database is empty, add generated song as new song in the database 
         if len(db.session.query(Song).all()) <= 0:
@@ -193,15 +192,39 @@ def playlists():
     """Show list of user's playlists"""
 
     if session.get("user_id") is not None:
-        playlists = Playlist.query.filter(Playlist.user_id).order_by('playlist_id').all()
-        return render_template("user_playlists_page.html")
+        playlists = db.session.query(Playlist).filter(Playlist.user_id == session.get("user_id")).order_by(Playlist.playlist_id).all()
+        return render_template("user_playlists_page.html", playlists = playlists)
     else:
         flash("User may view their playlist after logging in")
         return redirect("/login")
 
+@app.route("/playlists", methods=["POST"])
+def choose_playlists():
+    """Get playlist id to connect to different songs associated with id and display
+    songs in the following page"""
 
-    playlist = Playlist.query.order_by('title').all()
-    return render_template("playlist.html", playlist=playlist)
+    playlist_id = request.form.get("playlistId")
+    print(playlist_id)
+    songs = db.session.query(SongPlaylist).filter(SongPlaylist.playlist_id == playlist_id).all()
+    track_ids = []
+    for song in songs:
+        track_ids.append(song.track_id)
+    string_track_ids = ','.join(track_ids)
+    session["track_ids"] = string_track_ids
+    return redirect("/songspage")
+
+
+@app.route("/songspage")
+def songs():
+    """Show list of songs in playlist that user clicked on""" 
+
+    if session.get("user_id") is not None and session.get("track_ids") is not None:
+        saved_spotify_info = spotify.saved_songs(spotify.generate_token(), session["track_ids"])
+            
+        return render_template("user_songs_page.html", saved_spotify_info = saved_spotify_info)
+
+
+
 
 
 
@@ -223,3 +246,4 @@ if __name__ == "__main__":
 
 
 
+  

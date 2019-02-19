@@ -1,7 +1,7 @@
 import unittest
 
 from server import app
-from model import db, connect_to_db
+from model import db, connect_to_db, User, Playlist, Song, SongPlaylist
 import re
 
 
@@ -20,6 +20,45 @@ class ServerTests(unittest.TestCase):
     def test_register_page(self):
         result = self.client.get("/register")
         self.assertIn(b"Register an Account!", result.data)
+
+
+class TestUser(unittest.TestCase):
+    """Ensure user can register"""
+
+
+    def setUp(self):
+        """Stuff to do before every test."""
+
+        # Get the Flask test client
+        self.client = app.test_client()
+
+        # Show Flask errors that happen during tests
+        app.config['TESTING'] = True
+
+        # Connect to test database
+        connect_to_db(app)
+
+        # Create tables and add sample data
+        db.create_all()
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        db.session.close()
+        db.drop_all()
+    
+    def test_user_registration(self):
+        with self.client:
+            response = self.client.post('/register', data={
+                'fname': 'Jessica',
+                'lname': 'Kim',    
+                'email': 'jessica_yeon_kim@yahoo.com',
+                'password': 'mushrooms'
+            }, follow_redirects=True)
+            self.assertIn(b'User Jessica has been added', response.data)
+            user = User.query.filter_by(email = "jessica_yeon_kim@yahoo.com").first()
+            self.assertTrue(str(user) == '<User user_id=1 email=jessica_yeon_kim@yahoo.com>')
+    
     
 
 
@@ -43,11 +82,11 @@ class FlaskTests(unittest.TestCase):
         db.create_all()
 
 
-    # def tearDown(self):
-    #     """Do at end of every test."""
+    def tearDown(self):
+        """Do at end of every test."""
 
-    #     db.session.close()
-    #     db.drop_all()
+        db.session.close()
+        db.drop_all()
     
 
     def test_login_incorrect_email(self):

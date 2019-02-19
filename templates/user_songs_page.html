@@ -6,10 +6,7 @@
   {% for track in saved_spotify_info.tracks %}
   <div class = songCard>
     
-    <div class = songImage><img src={{ track.album.images[1].url }}>
-    </div>
-
-    <div class = songBio>
+  
 
     <div class = trackPlayer> <iframe src="https://open.spotify.com/embed/track/{{ track["id"] }}" width="300"
         height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
@@ -27,7 +24,7 @@
 
 
 
-    </div>
+    
 
     </div>
 

@@ -62,8 +62,8 @@ def register_process():
     user = db.session.query(User).filter(User.email == email).first()
     
     if user:
-            flash("User already exists")
-            redirect("/")
+        flash("User already exists")
+        return redirect("/")
     else:
         new_user = User(fname=fname, lname=lname, email=email, password=password)
 
@@ -121,11 +121,11 @@ def logout():
 def create_playlist():
     """Create playlist by selecting genre, danceability, and speechiness"""
 
-    if session.get("user_id") is not None:
-        return render_template("create_playlist.html")
-    else:
+    if session.get("user_id") is None:
         flash("User may create playlist after logging in")
         return redirect("/homepageloggedin")
+    else:
+        return render_template("create_playlist.html")
 
 @app.route("/create", methods=['POST'])
 def created_playlist():

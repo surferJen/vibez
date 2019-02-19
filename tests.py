@@ -25,7 +25,7 @@ class ServerTests(unittest.TestCase):
 
 
 class FlaskTests(unittest.TestCase):
-    """Flask tests for both valid and invalid login credentials. Use the database and check for flash messages."""
+    """Flask tests for valid and invalid login credentials and successful logout session"""
 
     def setUp(self):
         """Stuff to do before every test."""
@@ -79,27 +79,39 @@ class FlaskTests(unittest.TestCase):
         }, follow_redirects=True)
         self.assertTrue(re.search('Logged in.',
                                   response.get_data(as_text=True)))
+    
+    def test_logout(self):
+        #attempt to logout
+        with self.client:
+            self.client.post('/login', data={
+                            'email': 'jy.kim8295@gmail.com',
+                            'password': 'Elelelel91'
+            }, follow_redirects=True)
+        response = self.client.get('/logout', follow_redirects=True)
+        self.assertTrue(re.search('Logged out.',
+                                  response.get_data(as_text=True)))
+
                                 
 
-class FlaskTestsLoggedIn(unittest.TestCase):
-    """Flask tests with user logged in to session."""
+# class FlaskTestsLoggedIn(unittest.TestCase):
+#     """Flask tests with user logged in to session."""
 
-    def setUp(self):
-        """Stuff to do before every test."""
+#     def setUp(self):
+#         """Stuff to do before every test."""
 
-        app.config['TESTING'] = True
-        app.config['SECRET_KEY'] = 'key'
-        self.client = app.test_client()
+#         app.config['TESTING'] = True
+#         app.config['SECRET_KEY'] = 'key'
+#         self.client = app.test_client()
 
-        with self.client as c:
-            with c.session_transaction() as sess:
-                sess['user_id'] = 1
+#         with self.client as c:
+#             with c.session_transaction() as sess:
+#                 sess['user_id'] = 1
 
-    def test_important_page(self):
-        """Test important page."""
+#     def test_important_page(self):
+#         """Test important page."""
 
-        result = self.client.get("/important")
-        self.assertIn(b"You are a valued user", result.data)
+#         result = self.client.get("/important")
+#         self.assertIn(b"You are a valued user", result.data)
 
 
 

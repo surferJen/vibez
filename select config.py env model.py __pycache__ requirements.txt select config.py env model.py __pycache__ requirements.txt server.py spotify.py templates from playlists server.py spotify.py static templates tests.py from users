@@ -1,0 +1,5 @@
+ playlist_id | user_id |                          playlist_image                          | playlist_genre | playlist_mindanceability | playlist_maxdanceability 
+-------------+---------+------------------------------------------------------------------+----------------+--------------------------+--------------------------
+           1 |       1 | https://i.scdn.co/image/19c24900a8d89bd80db1446ab67e403edf921c47 | hip-hop        | 0                        | 0.7
+(1 row)
+

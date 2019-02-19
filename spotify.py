@@ -116,8 +116,6 @@ def saved_songs(at, track_id):
         return songsJSON
 
 
-print(saved_songs(generate_token(), "45XhKYRRkyeqoW3teSOkCM,7hsulgRNgbyczeAg8tChCB,608a1wIsSd5KzMEqm1O7w3"))
-
 
 
 

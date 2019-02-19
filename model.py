@@ -63,6 +63,7 @@ class Song(db.Model):
 
     playlists = db.relationship("Playlist", secondary="songs_playlists", backref="songs")
 
+
 class SongPlaylist(db.Model):
     """Middle table between Song and Playlist class"""
 
@@ -71,6 +72,7 @@ class SongPlaylist(db.Model):
     song_playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     track_id = db.Column(db.String(100), db.ForeignKey('songs.track_id'), nullable=False)
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'), nullable=False)
+
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""

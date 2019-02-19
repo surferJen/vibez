@@ -41,8 +41,13 @@ def homepage_loggedin():
 @app.route('/register')
 def register_form():
     """Show form for user signup"""
+    
+    if session.get("user_id") is None:
+        return render_template("register.html")
+    else:
+        flash("User is already logged in!")
+        return redirect("/homepageloggedin")
 
-    return render_template("register.html")
 
 @app.route('/register', methods=['POST'])
 def register_process():
@@ -72,7 +77,11 @@ def register_process():
 def login_form():
     """Show login form."""
 
-    return render_template("login.html")
+    if session.get("user_id") is None:
+        return render_template("login.html")
+    else:
+        flash("User is already logged in!")
+        return redirect("/homepageloggedin") 
 
 @app.route('/login', methods=['POST'])
 def login_process():
@@ -96,27 +105,17 @@ def login_process():
     #is logged in and is allowed to navigate said pages
     session["user_id"] = user.user_id
 
-    flash("Logged in")
-    return redirect("/homepage_loggedin")
+    flash("Logged in.")
+    return redirect("/homepageloggedin")
 
 @app.route('/logout')
 def logout():
         """Log out."""
 
         del session["user_id"]
-        flash("Logged Out.")
+        flash("Logged out.")
         return redirect("/")
-    
-# @app.route("/users")  #A route to check out other user's playlists
-# def user_list():
-#         """Show list of users"""
 
-#         users = User.query.all()
-#         return render_template("user_list.html", users=users)
-    
-@app.route("/userplaylist")
-def user_playlists(user_id):
-    """Show info about user's playlists."""
 
 @app.route("/create")
 def create_playlist():
@@ -126,7 +125,7 @@ def create_playlist():
         return render_template("create_playlist.html")
     else:
         flash("User may create playlist after logging in")
-        return redirect("/")
+        return redirect("/homepageloggedin")
 
 @app.route("/create", methods=['POST'])
 def created_playlist():
@@ -150,40 +149,42 @@ def created_playlist():
 @app.route("/generateplaylist")
 def generate_playlist():
     
+
     spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
     print(spotify_info)
 
-    playlist = Playlist(user_id=session["user_id"], playlist_image=spotify_info["tracks"][0]["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
+    if len(spotify_info.get("tracks")) <= 0:
+        flash("Change the search parameters of danceability. No playlist was generated.")
+        return redirect("/create")
+    else: 
+
+        playlist = Playlist(user_id=session["user_id"], playlist_image=spotify_info["tracks"][0]["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
                         playlist_maxdanceability=session["maximum_danceability"])
-    db.session.add(playlist)
-    db.session.commit()
+        db.session.add(playlist)
+        db.session.commit()
 
     #store songs into Song database and song-playlist data into SongPlaylist database
-    for track in spotify_info["tracks"]:
+        for track in spotify_info["tracks"]:
 
         #if Song database is empty, add generated song as new song in the database 
-        if len(db.session.query(Song).all()) <= 0:
-            song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
-            db.session.add(song)
-            db.session.commit()
+            if len(db.session.query(Song).all()) <= 0:
+                song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
+                db.session.add(song)
+                db.session.commit()
         #if a song(s) exists in the database, check to see if there is a match with generated song
         #and existing song(s) match. If there is no match, add generated song as new song in the database.
         #Both if statements check to make sure new songs that are added into database do not already
         #exist in the database.
-        if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
-            song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
-            db.session.add(song)
+            if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
+                song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
+                db.session.add(song)
+                db.session.commit()
+            songplaylist = SongPlaylist(track_id= track["id"], playlist_id= playlist.playlist_id)
+            db.session.add(songplaylist)
             db.session.commit()
-        songplaylist = SongPlaylist(track_id= track["id"], playlist_id= playlist.playlist_id)
-        db.session.add(songplaylist)
-        db.session.commit()
-
-   
 
     #reveal newly generated playlist on generate_playlist.html page based on stored session from user input above
-    return render_template("generate_playlist.html", spotify_info = spotify_info)
-
-
+        return render_template("generate_playlist.html", spotify_info = spotify_info)
     
 
 
@@ -235,14 +236,17 @@ if __name__ == "__main__":
 # that we invoke the DebugToolbarExtension
 
 #Do not debug for demo
-        app.debug = True
+    app.debug = True
 
-        connect_to_db(app)
+    connect_to_db(app)
 
 #Use the DebugToolbar
-        DebugToolbarExtension(app)
+    DebugToolbarExtension(app)
 
-        app.run(host="0.0.0.0")
+#prevent redirect(302)
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+
+    app.run(host="0.0.0.0")
 
 
 

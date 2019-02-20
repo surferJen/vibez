@@ -40,7 +40,10 @@ class TestUser(unittest.TestCase):
 
         # Create tables and add sample data
         db.create_all()
-
+        jen = User(fname='Jennifer', lname='Kim', email='jy.kim8295@gmail.com', password='Elelelel91')
+        db.session.add(jen)
+        db.session.commit()
+    
     def tearDown(self):
         """Do at end of every test."""
 
@@ -48,6 +51,7 @@ class TestUser(unittest.TestCase):
         db.drop_all()
     
     def test_user_registration(self):
+        """Test to see if new user can be registered"""
         with self.client:
             response = self.client.post('/register', data={
                 'fname': 'Jessica',
@@ -57,7 +61,10 @@ class TestUser(unittest.TestCase):
             }, follow_redirects=True)
             self.assertIn(b'User Jessica has been added', response.data)
             user = User.query.filter_by(email = "jessica_yeon_kim@yahoo.com").first()
-            self.assertTrue(str(user) == '<User user_id=1 email=jessica_yeon_kim@yahoo.com>')
+            self.assertTrue(str(user) == '<User user_id=2 email=jessica_yeon_kim@yahoo.com>')
+    
+    def test_existing_user_registration(self):
+        """Test to see if existing user is not all"""
     
     
 
@@ -80,7 +87,9 @@ class FlaskTests(unittest.TestCase):
 
         # Create tables and add sample data
         db.create_all()
-
+        jen = User(fname = 'Jennifer',lname = 'Kim', email = 'jy.kim8295@gmail.com',password = 'Elelelel91')
+        db.session.add(jen)
+        db.session.commit()
 
     def tearDown(self):
         """Do at end of every test."""

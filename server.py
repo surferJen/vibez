@@ -150,8 +150,8 @@ def created_playlist():
 def generate_playlist():
     
 
-    spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"], session["minimum_danceability"], session["maximum_danceability"])
-    print(spotify_info)
+    spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"].lower(), session["minimum_danceability"], session["maximum_danceability"])
+
 
     if len(spotify_info.get("tracks")) <= 0:
         flash("Change the search parameters of danceability. No playlist was generated.")
@@ -239,6 +239,9 @@ if __name__ == "__main__":
     app.debug = True
 
     connect_to_db(app)
+    db.create_all()
+    print("Connected to DB.")
+
 
 #Use the DebugToolbar
     DebugToolbarExtension(app)
@@ -247,6 +250,9 @@ if __name__ == "__main__":
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
     app.run(host="0.0.0.0")
+
+
+
 
 
 

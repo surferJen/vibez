@@ -11,6 +11,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Song, Playlist, SongPlaylist
 
+from sqlalchemy import func, distinct
+
 import spotify
 
 app = Flask(__name__)
@@ -81,7 +83,7 @@ def login_form():
         return render_template("login.html")
     else:
         flash("User is already logged in!")
-        return redirect("/homepageloggedin") 
+        return redirect("/playlists") 
 
 @app.route('/login', methods=['POST'])
 def login_process():
@@ -198,6 +200,26 @@ def playlists():
     else:
         flash("User may view their playlist after logging in")
         return redirect("/login")
+
+#d3 code
+@app.route("/playlists.json")
+def playlists_json():
+    """"""
+    if session.get("user_id") is not None:
+        playlists = db.session.query(Playlist).filter(Playlist.user_id == session.get("user_id")).order_by(Playlist.playlist_id).all()
+    playlists_list = []
+    for playlist in playlists:
+            playlist_dict = {}
+            playlist_dict["cat"] = playlist.playlist_genre
+            playlist_dict["name"] = playlist.playlist_id
+            playlist_dict["value"] = db.session.query(func.count(
+                Playlist.playlist_genre)).filter(Playlist.user_id == session["user_id"], Playlist.playlist_genre == playlist.playlist_genre).group_by(Playlist.playlist_genre).all()[0][0]
+            playlist_dict["icon"] = playlist.playlist_image
+            playlist_dict["desc"] = f'Minimum Danceability: {playlist.playlist_mindanceability} Maximum Danceability: {playlist.playlist_maxdanceability}'
+            playlists_list.append(playlist_dict)
+
+
+
 
 @app.route("/playlists", methods=["POST"])
 def choose_playlists():

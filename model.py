@@ -1,6 +1,8 @@
 """Models and database functions for Vibez project."""
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func, distinct
 from collections import defaultdict
+
 
 # This is the connection to the PostgreSQL database; we're getting this through the Flask-
 # SQLAlchemy helper library. On this, we can find the 'session' object, where we do most 

@@ -6,7 +6,7 @@ import requests
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Song, Playlist, SongPlaylist
@@ -108,7 +108,7 @@ def login_process():
     session["user_id"] = user.user_id
 
     flash("Logged in.")
-    return redirect("/homepageloggedin")
+    return redirect("/playlists")
 
 @app.route('/logout')
 def logout():
@@ -139,7 +139,7 @@ def created_playlist():
 
 
     #save as session so you can later see page of newly generated playlist
-    session["genre"] = genre
+    session["genre"] = genre.lower()
     session["minimum_danceability"] = min_danceability
     session["maximum_danceability"] = max_danceability
 
@@ -160,7 +160,7 @@ def generate_playlist():
         return redirect("/create")
     else: 
 
-        playlist = Playlist(user_id=session["user_id"], playlist_image=spotify_info["tracks"][0]["album"]["images"][1]["url"], playlist_genre=session["genre"], playlist_mindanceability=session["minimum_danceability"],
+        playlist = Playlist(user_id=session["user_id"], playlist_image=spotify_info["tracks"][0]["album"]["images"][1]["url"], playlist_genre=session["genre"].lower(), playlist_mindanceability=session["minimum_danceability"],
                         playlist_maxdanceability=session["maximum_danceability"])
         db.session.add(playlist)
         db.session.commit()
@@ -189,19 +189,19 @@ def generate_playlist():
         return render_template("generate_playlist.html", spotify_info = spotify_info)
     
 
-
+#flask route
 @app.route("/playlists")
 def playlists():
     """Show list of user's playlists"""
 
     if session.get("user_id") is not None:
         playlists = db.session.query(Playlist).filter(Playlist.user_id == session.get("user_id")).order_by(Playlist.playlist_id).all()
-        return render_template("user_playlists_page.html", playlists = playlists)
+        return render_template("D3_user_playlists_page.html", playlists = playlists)
     else:
         flash("User may view their playlist after logging in")
         return redirect("/login")
 
-#d3 code
+#json route that d3 retrieves data from
 @app.route("/playlists.json")
 def playlists_json():
     """"""
@@ -218,6 +218,7 @@ def playlists_json():
             playlist_dict["desc"] = f'Minimum Danceability: {playlist.playlist_mindanceability} Maximum Danceability: {playlist.playlist_maxdanceability}'
             playlists_list.append(playlist_dict)
 
+    return jsonify(playlists_list)
 
 
 

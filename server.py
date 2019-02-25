@@ -6,7 +6,7 @@ import requests
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session, jsonify
+from flask import Flask, render_template, request, flash, redirect, session, jsonify, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, User, Song, Playlist, SongPlaylist
@@ -227,7 +227,7 @@ def choose_playlists():
     """Get playlist id to connect to different songs associated with id and display
     songs in the following page"""
 
-    playlist_id = request.form.get("playlistId")
+    playlist_id = request.form["playlistId"]
     print(playlist_id)
     songs = db.session.query(SongPlaylist).filter(SongPlaylist.playlist_id == playlist_id).all()
     track_ids = []

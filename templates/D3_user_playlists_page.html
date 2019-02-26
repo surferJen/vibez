@@ -41,6 +41,9 @@
 		.legend-size circle {
 			fill: rgb(31, 119, 180);
 		}
+		image.node-icon {
+    clip-path: circle(50% at center);
+}
 	</style>
 
     <h1>Your Playlists!</h1>
@@ -102,7 +105,6 @@
 			}
 		});
 		simulation.nodes(nodes).on('tick', ticked);
-		svg.style('background-color', '#eee');
 		let node = svg.selectAll('.node')
 			.data(nodes)
 			.enter().append('g')

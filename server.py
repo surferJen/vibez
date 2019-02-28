@@ -260,7 +260,7 @@ def songs():
     final_spotify_dict["songs"] = saved_spotify_info_list
 
             
-    return render_template("amplitude_user_songs_page.html", final_spotify_dict = final_spotify_dict)
+    return render_template("amplitude_user_songs_page.html", saved_spotify_info = saved_spotify_info, final_spotify_dict = final_spotify_dict)
 
 
 

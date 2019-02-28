@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+	<head>
+		<title>Your Playlist!</title>
+	
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/foundation.min.css') }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
+		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/functions.js') }}"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/amplitudejs@4.0.0/dist/amplitude.js"></script>
+		
+	</head>
+	<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link" href="#">Features</a>
+      <a class="nav-item nav-link" href="#">Pricing</a>
+      <a class="nav-item nav-link disabled" href="#">Disabled</a>
+    </div>
+  </div>
+</nav>
+
+
+		<div class="grid-x" id="blue-playlist-container">
+			<div class="large-7 medium-8 small-6 large-centered medium-centered small-centered cell" id="amplitude-player">
+				<div class="grid-x">
+				  <div class="large-6 medium-6 small-12 cell" id="amplitude-left">
+				    <img data-amplitude-song-info="cover_art_url"/>
+				    <div id="player-left-bottom">
+				      <div id="time-container">
+				        <span class="current-time">
+				          <span class="amplitude-current-minutes" ></span>:<span class="amplitude-current-seconds"></span>
+				        </span>
+				        <div id="progress-container">
+				          <input type="range" class="amplitude-song-slider"/>
+				          <progress id="song-played-progress" class="amplitude-song-played-progress"></progress>
+				          <progress id="song-buffered-progress" class="amplitude-buffered-progress" value="0"></progress>
+				        </div>
+				        <span class="duration">
+				          <span class="amplitude-duration-minutes"></span>:<span class="amplitude-duration-seconds"></span>
+				        </span>
+				      </div>
+
+				      <div id="control-container">
+				        <div id="repeat-container">
+				          <div class="amplitude-repeat" id="repeat"></div>
+				          <div class="amplitude-shuffle amplitude-shuffle-off" id="shuffle"></div>
+				        </div>
+
+				        <div id="central-control-container">
+				          <div id="central-controls">
+				            <div class="amplitude-prev" id="previous"></div>
+				            <div class="amplitude-play-pause" id="play-pause"></div>
+				            <div class="amplitude-next" id="next"></div>
+				          </div>
+				        </div>
+
+				        <div id="volume-container">
+				          <div class="volume-controls">
+				            <div class="amplitude-mute amplitude-not-muted"></div>
+				            <input type="range" class="amplitude-volume-slider"/>
+				            <div class="ms-range-fix"></div>
+				          </div>
+				          <div class="amplitude-shuffle amplitude-shuffle-off" id="shuffle-right"></div>
+				        </div>
+				      </div>
+
+
+
+				      <div id="meta-container">
+				        <span data-amplitude-song-info="name" class="song-name"></span>
+
+				        <div class="song-artist-album">
+				          <span data-amplitude-song-info="artist"></span>
+				          <span data-amplitude-song-info="album"></span>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				  <div class="large-6 medium-6 small-12 cell" id="amplitude-right">
+                  
+                  {% for track in spotify_info.tracks %}
+				    <div class="song amplitude-song-container amplitude-play-pause" data-amplitude-song-index="0">
+				      <div class="song-now-playing-icon-container">
+				        <div class="play-button-container">
+
+				        </div>
+				        <img class="now-playing" src="{{ url_for('static', filename='img/now-playing.svg') }}">
+				      </div>
+                      
+				      <div class="song-meta-data">
+				        <span class="song-title">{{track["name"]}}</span>
+                        {% for artist in track.artists %}
+                        <span class="song-artist">{{ artist["name"] }}</span>
+                        {% endfor %}
+				      </div>
+				      <a href="{{ track["preview_url"] }}" class="bandcamp-link" target="_blank">
+				        <img class="bandcamp-grey" src="{{ url_for('static', filename='img/bandcamp-grey.svg') }}">
+				        <img class="bandcamp-white" src="{{ url_for('static', filename='img/bandcamp-white.svg') }}">
+				      </a>
+				      <span class="song-duration">{{ track["duration_ms"] }}</span>
+				    </div>
+                    {% endfor %}
+				    
+				    
+				    </div>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+		var data = {{ fin_spotify_dict | tojson }};
+    console.log(data);
+
+
+    Amplitude.init(data);
+
+	</script>
+{% endblock %}

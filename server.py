@@ -187,8 +187,33 @@ def generate_playlist():
             db.session.commit()
 
     #reveal newly generated playlist on generate_playlist.html page based on stored session from user input above
-        return render_template("generate_playlist.html", spotify_info = spotify_info)
-    
+
+    #create json format that in the form that Amplitude.js can read
+    spotify_info_list = []
+    for track in spotify_info["tracks"]:
+        spotify_info_dict = {}
+        millis = int(track["duration_ms"])
+        minutes = millis//(1000*60)
+        minutes = int(minutes)
+        seconds = (millis % (1000*60)) / 1000
+        seconds = int(seconds)
+        if seconds == 0:
+            seconds = "00"
+        track["duration_ms"] = f'{minutes}:{seconds}'
+
+        spotify_info_dict["name"] = track["name"]
+        spotify_info_dict["artist"] = [
+            f' {artist["name"]}' for artist in track["artists"]]
+        spotify_info_dict["album"] = track["album"]["name"]
+        spotify_info_dict["url"] = track["preview_url"]
+        spotify_info_dict["cover_art_url"] = track["album"]["images"][0]["url"]
+        spotify_info_list.append(spotify_info_dict)
+
+    fin_spotify_dict = {}
+    fin_spotify_dict["songs"] = spotify_info_list
+
+    return render_template("amplitude_generate_playlist.html", spotify_info = spotify_info, fin_spotify_dict = fin_spotify_dict)
+
 
 #flask route
 @app.route("/playlists")
@@ -263,7 +288,7 @@ def songs():
         saved_spotify_info_dict["artist"] = [f' {artist["name"]}' for artist in track["artists"]]
         saved_spotify_info_dict["album"] = track["album"]["name"]
         saved_spotify_info_dict["url"] = track["preview_url"]
-        saved_spotify_info_dict["cover_art_url"] = track["album"]["images"][1]["url"]
+        saved_spotify_info_dict["cover_art_url"] = track["album"]["images"][0]["url"]
         saved_spotify_info_list.append(saved_spotify_info_dict)
     
     final_spotify_dict = {}
@@ -272,27 +297,6 @@ def songs():
             
     return render_template("amplitude_user_songs_page.html", saved_spotify_info = saved_spotify_info, final_spotify_dict = final_spotify_dict)
 
-
-
-# @app.route("/songspage.json")
-# def songs_json():
-#     """take spotify json and refactor it to imitate Aplitude.js object format (match key-value pair), jsonify that, and send that to front-end """
-
-#     saved_spotify_info = spotify.saved_songs(spotify.generate_token(), session["track_ids"])
-#     print (saved_spotify_info)
-#     saved_spotify_info_list = []
-#     for track in saved_spotify_info:
-#         saved_spotify_info_dict = {}
-#         saved_spotify_info_dict["name"] = track.name
-#         saved_spotify_info_dict["artist"] = [artist.name for artist in track.artists]
-#         saved_spotify_info_dict["album"] = track.album["name"]
-#         saved_spotify_info_dict["url"] = f'https://open.spotify.com/embed/track/{track.id}'
-#         saved_spotify_info_dict["cover_art_url"] = track.album["images"][1]
-#         saved_spotify_info_list.append(saved_spotify_info_dict)
-    
-   
-    
-#     return jsonify(saved_spotify_info_list)
 
 
 

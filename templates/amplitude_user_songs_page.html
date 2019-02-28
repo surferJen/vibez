@@ -85,7 +85,7 @@
                         <span class="song-artist">{{ artist["name"] }}</span>
                         {% endfor %}
 				      </div>
-				      <a href="https://open.spotify.com/embed/track/{{ track["id"] }}" class="bandcamp-link" target="_blank">
+				      <a href="{{ track["preview_url"] }}" class="bandcamp-link" target="_blank">
 				        <img class="bandcamp-grey" src="{{ url_for('static', filename='img/bandcamp-grey.svg') }}">
 				        <img class="bandcamp-white" src="{{ url_for('static', filename='img/bandcamp-white.svg') }}">
 				      </a>

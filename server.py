@@ -246,14 +246,24 @@ def songs():
     if session.get("user_id") is not None and session.get("track_ids") is not None:
         saved_spotify_info = spotify.saved_songs(spotify.generate_token(), session["track_ids"])
 
+
     saved_spotify_info_list = []
     for track in saved_spotify_info["tracks"]:
         saved_spotify_info_dict = {}
+        millis = int(track["duration_ms"])
+        minutes = millis//(1000*60)
+        minutes = int(minutes)
+        seconds = (millis % (1000*60)) / 1000
+        seconds = int(seconds)
+        if seconds == 0:
+            seconds = "00"
+        track["duration_ms"] = f'{minutes}:{seconds}'
+
         saved_spotify_info_dict["name"] = track["name"]
-        saved_spotify_info_dict["artist"] = [artist["name"] for artist in track["artists"]]
+        saved_spotify_info_dict["artist"] = [f' {artist["name"]}' for artist in track["artists"]]
         saved_spotify_info_dict["album"] = track["album"]["name"]
-        saved_spotify_info_dict["url"] = f'https://open.spotify.com/embed/track/{track["id"]}'
-        saved_spotify_info_dict["cover_art_url"] = track["album"]["images"][1]
+        saved_spotify_info_dict["url"] = track["preview_url"]
+        saved_spotify_info_dict["cover_art_url"] = track["album"]["images"][1]["url"]
         saved_spotify_info_list.append(saved_spotify_info_dict)
     
     final_spotify_dict = {}

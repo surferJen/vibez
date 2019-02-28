@@ -1,5 +1,6 @@
 "Vibez"
 from pprint import pformat
+import json
 import os
 
 import requests
@@ -204,19 +205,19 @@ def playlists():
 #json route that d3 retrieves data from
 @app.route("/playlists.json")
 def playlists_json():
-    """"""
+    """query songs associated with playlist id and turn it into a json with relevant info to send to front-end (d3.js) """
     if session.get("user_id") is not None:
         playlists = db.session.query(Playlist).filter(Playlist.user_id == session.get("user_id")).order_by(Playlist.playlist_id).all()
     playlists_list = []
     for playlist in playlists:
-            playlist_dict = {}
-            playlist_dict["cat"] = playlist.playlist_genre
-            playlist_dict["name"] = playlist.playlist_id
-            playlist_dict["value"] = db.session.query(func.count(
-                Playlist.playlist_genre)).filter(Playlist.user_id == session["user_id"], Playlist.playlist_genre == playlist.playlist_genre).group_by(Playlist.playlist_genre).all()[0][0]
-            playlist_dict["icon"] = playlist.playlist_image
-            playlist_dict["desc"] = f'Minimum Danceability: {playlist.playlist_mindanceability} Maximum Danceability: {playlist.playlist_maxdanceability}'
-            playlists_list.append(playlist_dict)
+        playlist_dict = {}
+        playlist_dict["cat"] = playlist.playlist_genre
+        playlist_dict["name"] = playlist.playlist_id
+        playlist_dict["value"] = db.session.query(func.count(
+            Playlist.playlist_genre)).filter(Playlist.user_id == session["user_id"], Playlist.playlist_genre == playlist.playlist_genre).group_by(Playlist.playlist_genre).all()[0][0]
+        playlist_dict["icon"] = playlist.playlist_image
+        playlist_dict["desc"] = f'Minimum Danceability: {playlist.playlist_mindanceability} Maximum Danceability: {playlist.playlist_maxdanceability}'
+        playlists_list.append(playlist_dict)
 
     return jsonify(playlists_list)
 
@@ -244,13 +245,44 @@ def songs():
 
     if session.get("user_id") is not None and session.get("track_ids") is not None:
         saved_spotify_info = spotify.saved_songs(spotify.generate_token(), session["track_ids"])
+
+    saved_spotify_info_list = []
+    for track in saved_spotify_info["tracks"]:
+        saved_spotify_info_dict = {}
+        saved_spotify_info_dict["name"] = track["name"]
+        saved_spotify_info_dict["artist"] = [artist["name"] for artist in track["artists"]]
+        saved_spotify_info_dict["album"] = track["album"]["name"]
+        saved_spotify_info_dict["url"] = f'https://open.spotify.com/embed/track/{track["id"]}'
+        saved_spotify_info_dict["cover_art_url"] = track["album"]["images"][1]
+        saved_spotify_info_list.append(saved_spotify_info_dict)
+    
+    final_spotify_dict = {}
+    final_spotify_dict["songs"] = saved_spotify_info_list
+
             
-        return render_template("user_songs_page.html", saved_spotify_info = saved_spotify_info)
+    return render_template("amplitude_user_songs_page.html", final_spotify_dict = final_spotify_dict)
 
 
 
+# @app.route("/songspage.json")
+# def songs_json():
+#     """take spotify json and refactor it to imitate Aplitude.js object format (match key-value pair), jsonify that, and send that to front-end """
 
-
+#     saved_spotify_info = spotify.saved_songs(spotify.generate_token(), session["track_ids"])
+#     print (saved_spotify_info)
+#     saved_spotify_info_list = []
+#     for track in saved_spotify_info:
+#         saved_spotify_info_dict = {}
+#         saved_spotify_info_dict["name"] = track.name
+#         saved_spotify_info_dict["artist"] = [artist.name for artist in track.artists]
+#         saved_spotify_info_dict["album"] = track.album["name"]
+#         saved_spotify_info_dict["url"] = f'https://open.spotify.com/embed/track/{track.id}'
+#         saved_spotify_info_dict["cover_art_url"] = track.album["images"][1]
+#         saved_spotify_info_list.append(saved_spotify_info_dict)
+    
+   
+    
+#     return jsonify(saved_spotify_info_list)
 
 
 

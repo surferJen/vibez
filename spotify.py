@@ -92,6 +92,9 @@ def base_playlist(at, genre, min_danceability, max_danceability):
     # soundtracks, spanish, study, summer, swedish, synth-pop, tango,
     # techno, trance, trip-hop, turkish, work-out, world-music
 
+# print(base_playlist(generate_token(), "classical", 0, 0.5))
+
+
 def saved_songs(at, track_id):
         #Ok this is the meat an potatoes we will now generate a list of hiphop music based on parameters
         #Note that this would probably be set from the client,but an initial state would need to be accounted for

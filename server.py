@@ -27,17 +27,17 @@ app.jinja_env.undefined = StrictUndefined
 
 
 
-@app.route("/")
-def index():
-    """Homepage for those not logged in"""
+# @app.route("/")
+# def index():
+#     """Homepage for those not logged in"""
 
-    return render_template("homepage.html")
+#     return render_template("homepage.html")
 
-@app.route("/homepageloggedin")
-def homepage_loggedin():
-    """Homepage for those who are logged in"""
+# @app.route("/homepageloggedin")
+# def homepage_loggedin():
+#     """Homepage for those who are logged in"""
 
-    return render_template("homepage_loggedin.html")
+#     return render_template("homepage_loggedin.html")
 
 
 
@@ -76,7 +76,7 @@ def register_process():
         flash(f"User {fname} has been added.")
         return redirect("/login")
 
-@app.route('/login')
+@app.route('/')
 def login_form():
     """Show login form."""
 
@@ -86,7 +86,7 @@ def login_form():
         flash("User is already logged in!")
         return redirect("/playlists") 
 
-@app.route('/login', methods=['POST'])
+@app.route('/', methods=['POST'])
 def login_process():
     """Process login"""
 
@@ -98,11 +98,11 @@ def login_process():
 
     if not user:
         flash("No such user")
-        return redirect("/login")
+        return redirect("/")
     
     if user.password != password:
         flash("Incorrect password")
-        return redirect("/login")
+        return redirect("/")
     
     #this is the session id in which it determines whether user 
     #is logged in and is allowed to navigate said pages

@@ -1,6 +1,41 @@
 {% extends 'base.html' %}
 {% block content %}
+  
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Vibez</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link active" id="buttonPlaylists" href="#">Playlists <span class="sr-only">(current)</span></a> 
+    </div>
+  </div>
+
+	<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" id="buttonLogout" href="#">Log Out</a>
+            </li>
+            
+        </ul>
+    </div>
+</nav>
+
+<script>
+
+    document.getElementById("buttonPlaylists").onclick = function() {
+  	    window.location.href = "/playlists";
+		    };
+
+	document.getElementById("buttonLogout").onclick = function() {
+  	    window.location.href = "/logout";
+		    };
+
+</script>
+
   <h1>Generate Your Playlist!</h1>
+
   <form action="/create" method='POST'>
 
     
@@ -21,5 +56,6 @@
       <input type="submit" value="Create Playlist!" class="btn btn-create">
 
   </form>
+
 
 {% endblock %}

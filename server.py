@@ -49,7 +49,7 @@ def register_form():
         return render_template("register.html")
     else:
         flash("User is already logged in!")
-        return redirect("/homepageloggedin")
+        return redirect("/")
 
 
 @app.route('/register', methods=['POST'])
@@ -74,7 +74,7 @@ def register_process():
         db.session.commit()
 
         flash(f"User {fname} has been added.")
-        return redirect("/login")
+        return redirect("/")
 
 @app.route('/')
 def login_form():

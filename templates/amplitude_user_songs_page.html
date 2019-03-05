@@ -24,9 +24,9 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-      <a class="nav-item nav-link active" href="#">Playlists</a>
-      <a class="nav-item nav-link active" href="#">Search</a>
+      <a class="nav-item nav-link active" id="buttonPlaylists" href="#">Playlists <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link active" href="#">Create</a>
+      
     </div>
   </div>
 
@@ -137,5 +137,12 @@
 
     Amplitude.init(data);
 
+
+		document.getElementById("buttonPlaylists").onclick = function() {
+  	window.location.href = "/playlists";
+		};
+
+
 	</script>
+
 {% endblock %}

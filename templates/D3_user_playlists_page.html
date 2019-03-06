@@ -310,6 +310,21 @@
 			d3.event.stopPropagation();
 			console.log('currentNode', currentNode);
 			let currentTarget = d3.event.currentTarget; // the <g> el
+			console.log(currentTarget.getElementsByClassName('node-icon')[0]);
+			let scale = 4;
+			const imageNode = currentTarget.getElementsByClassName('node-icon')[0];
+			let iconSize = imageNode.getAttribute('height') *scale;
+			let iconCord = imageNode.getAttribute('x') * scale;
+
+			imageNode.setAttribute('height',iconSize);
+			imageNode.setAttribute('width',iconSize);
+
+			imageNode.setAttribute('x',iconCord);
+			imageNode.setAttribute('y',iconCord);
+			imageNode.setAttribute('style','clip-path: fill-box;')
+
+			console.log(iconCord);
+
 			if (currentNode === focusedNode) {
 				// no focusedNode or same focused node is clicked
 				return;
@@ -340,6 +355,7 @@
 			d3.transition().duration(2000).ease(d3.easePolyOut)
 				.tween('moveIn', () => {
 					console.log('tweenMoveIn', currentNode);
+				
 					let ix = d3.interpolateNumber(currentNode.x, centerX);
 					let iy = d3.interpolateNumber(currentNode.y, centerY);
 					let ir = d3.interpolateNumber(currentNode.r, centerY * 0.5);
@@ -391,6 +407,8 @@
 						simulation.alphaTarget(0);
 					});
 				// hide all circle-overlay
+
+				console.log(target);
 				d3.selectAll('.circle-overlay').classed('hidden', true);
 				d3.selectAll('.node-icon').classed('node-icon--faded', false);
 			}

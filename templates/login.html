@@ -1,8 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
+
+<style>
+@keyframes glowing {
+  0% { text-shadow: 0 0 -10px white; }
+  40% { text-shadow: 0 0 100 white; }
+  60% { text-shadow: 0 0 100px white; }
+  100% { text-shadow: 0 0 -10px white; }
+}
+.navbar-brand{
+	font-weight: bold;
+	animation: glowing 2000ms infinite;
+}
+
+html,body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Helvetica, Calibri, Roboto, Open Sans, sans-serif -webkit-backface-visibility: hidden;
+    height: 100%;
+    width: 100%;
+    color: white;
+    background-color: #000000;
+    background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%);
+    
+}
+.btn.btn-login {
+  color:white;
+  border: 1px solid white;
+}
+h1 {
+  text-align:center;
+}
+form {
+  text-align:center;
+}
+</style>
   
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Vibez</a>
+	<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand">Vibez</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -27,27 +63,27 @@
 </script>
 
 
-<div class="well spaced" style="width:40%;">
-<div>
+<div class="row">
+<div class="col-sm-12 col-lg-6 ml-lg-auto mr-lg-auto center">
   <h1>Login</h1>
+  <br>
   <form action="/" method="POST">
 
+  
     <div class="form-group">
-      <label>Email:
-          <input type="email" name="email" required class="form-control">
-      </label>
+    <label>Email:</label>
+        <input class="form-control col-sm-6 ml-lg-auto mr-lg-auto center" type="text" name="email" required class="form-control">
     </div>
-
+    
+    
     <div class="form-group">
-      <label>Password:
-          <input type="password" name="password" required class="form-control">
-      </label>
+    <label>Password:</label> 
+      <input class="form-control col-sm-6 ml-lg-auto mr-lg-auto center" type="password" name="password" required class="form-control">
     </div>
-
-    <div class="form-group">
-      <input type="submit" value="Login" class="btn btn-login">
-    </div>
-
+    <br>
+    
+    <input type="submit" value="Login" class="btn btn-login">
+    
   </form>
 </div>
 </div>

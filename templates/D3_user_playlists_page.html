@@ -24,7 +24,7 @@
 			display:block;
 		}
 		text.label {
-			color: white;
+			fill: white;
 		}
 		.circle-overlay {
 			font-size: 16px;
@@ -50,11 +50,22 @@
 		}
 		image.node-icon {
     		clip-path: circle(50% at center);
+		}
 
+	@keyframes glowing {
+  0% { text-shadow: 0 0 -10px white; }
+  40% { text-shadow: 0 0 100 white; }
+  60% { text-shadow: 0 0 100px white; }
+  100% { text-shadow: 0 0 -10px white; }
 }
+.navbar-brand{
+	   font-weight: bold;
+	animation: glowing 2000ms infinite;
+}
+
 	</style>
 
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="#">Vibez</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -74,7 +85,6 @@
         </ul>
     </div>
 </nav>
-
 <script>
 
 		document.getElementById("buttonCreate").onclick = function() {

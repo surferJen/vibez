@@ -1,43 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<style>
-@keyframes glowing {
-  0% { text-shadow: 0 0 -10px white; }
-  40% { text-shadow: 0 0 100 white; }
-  60% { text-shadow: 0 0 100px white; }
-  100% { text-shadow: 0 0 -10px white; }
-}
-.navbar-brand{
-	font-weight: bold;
-	animation: glowing 2000ms infinite;
-}
-
-html,body {
-     padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: Helvetica, Calibri, Roboto, Open Sans, sans-serif -webkit-backface-visibility: hidden;
-    height: 100%;
-    width: 100%;
-    color: white;
-    background-color: #000000;
-    background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%);
-    
-}
-.btn.btn-register {
-  color:white;
-  border: 1px solid white;
-}
-h1 {
-  text-align:center;
-}
-form {
-  text-align:center;
-}
-</style>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/amplitude_generate_playlist.css') }}">
+	
 	<head>
 		<title>Your Playlist!</title>
-	
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/foundation.min.css') }}">
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
 		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
@@ -71,22 +37,7 @@ form {
     </div>
 </nav>
 
-<script>
-
-		document.getElementById("buttonPlaylists").onclick = function() {
-  	window.location.href = "/playlists";
-		};
-
-		document.getElementById("buttonCreate").onclick = function() {
-  	window.location.href = "/create";
-		};
-
-		document.getElementById("buttonLogout").onclick = function() {
-  	window.location.href = "/logout";
-		};
-
-
-</script>
+<script type="text/javascript" src="{{ url_for('static', filename='amplitude_generate_playlist.js') }}"></script>
 
 {% with messages = get_flashed_messages() %}
   {% if messages %}

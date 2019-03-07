@@ -27,19 +27,6 @@ app.jinja_env.undefined = StrictUndefined
 
 
 
-# @app.route("/")
-# def index():
-#     """Homepage for those not logged in"""
-
-#     return render_template("homepage.html")
-
-# @app.route("/homepageloggedin")
-# def homepage_loggedin():
-#     """Homepage for those who are logged in"""
-
-#     return render_template("homepage_loggedin.html")
-
-
 
 @app.route('/register')
 def register_form():

@@ -95,7 +95,7 @@ def login_process():
     #is logged in and is allowed to navigate said pages
     session["user_id"] = user.user_id
 
-    flash("Logged in.")
+    flash("User has successfully logged in")
     return redirect("/playlists")
 
 @app.route('/logout')

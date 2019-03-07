@@ -39,6 +39,7 @@ text.label {
 	display: none;
 	}
 .node-icon--faded {
+	width: inherit;
 	opacity: 0.5;
 	}
 .legend-size circle {
@@ -56,4 +57,111 @@ image.node-icon {
 .navbar-brand{
 	font-weight: bold;
 	animation: glowing 2000ms infinite;
+}
+@keyframes blimp {
+0% { transform:scale(1);}
+100% { transform:scale(5.8);}
+}
+@keyframes blop {
+0% { transform:scale(1.8);}
+100% { transform:scale(1);}
+}
+.node-icon-xxxxs{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxs{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxs{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xs{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-s {
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-m{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-l{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xl{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxl{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxl{
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxl{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxxl{
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
+}
+
+
+
+.node-icon-xxxxs-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxs-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxs-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xs-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-s-faded{
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-m-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-l-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xl-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxl-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxl-faded{
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxl-faded{
+	animation: blop 2000ms;
+	animation-fill-mode: forwards;
+}
+.node-icon-xxxxl-faded{
+	animation: blimp 2000ms;
+	animation-fill-mode: forwards;
 }

@@ -204,20 +204,8 @@ d3.json('/playlists.json').then(function (data) {
         d3.event.stopPropagation();
         console.log('currentNode', currentNode);
         let currentTarget = d3.event.currentTarget; // the <g> el
-        console.log(currentTarget.getElementsByClassName('node-icon')[0]);
-        let scale = 4;
-        const imageNode = currentTarget.getElementsByClassName('node-icon')[0];
-        let iconSize = imageNode.getAttribute('height') * scale;
-        let iconCord = imageNode.getAttribute('x') * scale;
 
-        imageNode.setAttribute('height', iconSize);
-        imageNode.setAttribute('width', iconSize);
 
-        imageNode.setAttribute('x', iconCord);
-        imageNode.setAttribute('y', iconCord);
-        imageNode.setAttribute('style', 'clip-path: fill-box;')
-
-        console.log(iconCord);
 
         if (currentNode === focusedNode) {
             // no focusedNode or same focused node is clicked
@@ -246,6 +234,7 @@ d3.json('/playlists.json').then(function (data) {
                 });
         }
         // if (!d3.event.active) simulation.alphaTarget(0.5).restart();
+
         d3.transition().duration(2000).ease(d3.easePolyOut)
             .tween('moveIn', () => {
                 console.log('tweenMoveIn', currentNode);
@@ -253,21 +242,33 @@ d3.json('/playlists.json').then(function (data) {
                 let ix = d3.interpolateNumber(currentNode.x, centerX);
                 let iy = d3.interpolateNumber(currentNode.y, centerY);
                 let ir = d3.interpolateNumber(currentNode.r, centerY * 0.5);
+                let $currentGroup = d3.select(currentTarget);
+                $currentGroup.select('.node-icon')
+                    .classed('node-icon--faded', true);
+                let test;
+
                 return function (t) {
                     // console.log('i', ix(t), iy(t));
                     currentNode.fx = ix(t);
                     currentNode.fy = iy(t);
+
+                    let scale = (currentNode.r / currentNode.radius) * 1.4;
+                    console.log(currentNode);
+                    $currentGroup.select('.node-icon').attr('style', `transform:scale(${scale})`)
                     currentNode.r = ir(t);
+                    test = currentNode.r;
                     simulation.force('collide', forceCollide);
                 };
+
             })
             .on('end', () => {
+
                 simulation.alphaTarget(0);
                 let $currentGroup = d3.select(currentTarget);
                 $currentGroup.select('.circle-overlay')
                     .classed('hidden', false);
-                $currentGroup.select('.node-icon')
-                    .classed('node-icon--faded', true);
+
+
             })
             .on('interrupt', () => {
                 console.log('move interrupt', currentNode);
@@ -286,10 +287,17 @@ d3.json('/playlists.json').then(function (data) {
             simulation.alphaTarget(0.2).restart();
             d3.transition().duration(2000).ease(d3.easePolyOut)
                 .tween('moveOut', function () {
+                    d3.selectAll('.node-icon--faded').classed('node-icon-pre', true);
+                    d3.selectAll('.node-icon').classed('node-icon--faded', false);
+
                     console.log('tweenMoveOut', focusedNode);
                     let ir = d3.interpolateNumber(focusedNode.r, focusedNode.radius);
                     return function (t) {
                         focusedNode.r = ir(t);
+
+                        let scale = (focusedNode.r / focusedNode.radius);
+                        console.log(scale);
+                        d3.selectAll('.node-icon-pre').attr('style', `transform:scale(${scale})`)
                         simulation.force('collide', forceCollide);
                     };
                 })
@@ -304,7 +312,8 @@ d3.json('/playlists.json').then(function (data) {
 
             console.log(target);
             d3.selectAll('.circle-overlay').classed('hidden', true);
-            d3.selectAll('.node-icon').classed('node-icon--faded', false);
+            d3.selectAll('.node-icon').classed('node-icon-pre', false);
+
         }
     });
     function ticked() {

@@ -228,7 +228,7 @@ def playlists_json():
         playlist_dict["value"] = db.session.query(func.count(
             Playlist.playlist_genre)).filter(Playlist.user_id == session["user_id"], Playlist.playlist_genre == playlist.playlist_genre).group_by(Playlist.playlist_genre).all()[0][0]
         playlist_dict["icon"] = playlist.playlist_image
-        playlist_dict["desc"] = f'Minimum Danceability: {playlist.playlist_mindanceability} Maximum Danceability: {playlist.playlist_maxdanceability}'
+        playlist_dict["desc"] = f'Danceability: {playlist.playlist_mindanceability} - {playlist.playlist_maxdanceability}'
         playlists_list.append(playlist_dict)
 
     return jsonify(playlists_list)

@@ -72,6 +72,16 @@ form {
     </div>
 </nav>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class="text-center text-danger">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
 
 		<div class="grid-x" id="blue-playlist-container">
 			<div class="large-7 medium-8 small-6 large-centered medium-centered small-centered cell" id="amplitude-player">

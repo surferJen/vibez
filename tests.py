@@ -12,14 +12,14 @@ class ServerTests(unittest.TestCase):
         self.client = app.test_client()
         app.config['TESTING'] = True
 
-    def test_homepage(self):
+    def test_login(self):
         result = self.client.get("/")
         self.assertIn(
             b"Vibez", result.data)
 
     def test_register_page(self):
         result = self.client.get("/register")
-        self.assertIn(b"Register an Account!", result.data)
+        self.assertIn(b"Create New Account", result.data)
 
 
 class TestUser(unittest.TestCase):
@@ -65,8 +65,14 @@ class TestUser(unittest.TestCase):
     
     def test_existing_user_registration(self):
         """Test to see if existing user is not all"""
-    
-    
+        with self.client:
+            response = self.client.post('/register', data={
+                'fname': 'Jennifer',
+                'lname': 'Kim',
+                'email': 'jy.kim8295@gmail.com',
+                'password': 'Elelelel91'
+                }, follow_redirects=True)
+            self.assertIn(b'User already exists', response.data)
 
 
 
@@ -100,7 +106,7 @@ class FlaskTests(unittest.TestCase):
 
     def test_login_incorrect_email(self):
         #attempt login with incorrect email credentials
-        response = self.client.post('/login', data={
+        response = self.client.post('/', data={
             'email': 'jy.kim@gmail.com',
             'password': 'Elelelel91'
         }, follow_redirects=True)
@@ -111,7 +117,7 @@ class FlaskTests(unittest.TestCase):
     
     def test_login_incorrect_password(self):
         #attempt login with incorrect password credentials
-        response = self.client.post('/login', data={
+        response = self.client.post('/', data={
             'email': 'jy.kim8295@gmail.com',
             'password': 'Elelelel'
         }, follow_redirects=True)
@@ -121,17 +127,17 @@ class FlaskTests(unittest.TestCase):
     
     def test_login_correct_user(self):
         #attempt login with correct user credentials
-        response = self.client.post('/login', data={
+        response = self.client.post('/', data={
             'email': 'jy.kim8295@gmail.com',
             'password': 'Elelelel91'
         }, follow_redirects=True)
-        self.assertTrue(re.search('Logged in.',
+        self.assertTrue(re.search('User has successfully logged in',
                                   response.get_data(as_text=True)))
     
     def test_logout(self):
         #attempt to logout
         with self.client:
-            self.client.post('/login', data={
+            self.client.post('/', data={
                             'email': 'jy.kim8295@gmail.com',
                             'password': 'Elelelel91'
             }, follow_redirects=True)
@@ -139,27 +145,34 @@ class FlaskTests(unittest.TestCase):
         self.assertTrue(re.search('Logged out.',
                                   response.get_data(as_text=True)))
 
+#finish writing tests for session
+class SessionTests(unittest.TestCase):
+    """Check for successful session storage"""
+
+
+    def setUp(self):
+        self.client = app.test_client()
+        app.config['TESTING'] = True
+
+        with app.test_client() as c:
+            with c.session_transaction() as sess:
+                sess['a_key'] = 'a value'
+
+    def tearDown(self):
+        """Do at end of every test."""
+
+        db.session.close()
+        db.drop_all()
+        
+    def session(self):
+        #check if session is stored after logging in
+        with app.test_client() as c:
+            rv = c.get('/')
+            assert flask.session["user_id"] == 4
+
+
                                 
 
-# class FlaskTestsLoggedIn(unittest.TestCase):
-#     """Flask tests with user logged in to session."""
-
-#     def setUp(self):
-#         """Stuff to do before every test."""
-
-#         app.config['TESTING'] = True
-#         app.config['SECRET_KEY'] = 'key'
-#         self.client = app.test_client()
-
-#         with self.client as c:
-#             with c.session_transaction() as sess:
-#                 sess['user_id'] = 1
-
-#     def test_important_page(self):
-#         """Test important page."""
-
-#         result = self.client.get("/important")
-#         self.assertIn(b"You are a valued user", result.data)
 
 
 

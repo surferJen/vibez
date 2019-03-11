@@ -1,6 +1,6 @@
 # Vibez
 
-Moodify is a web application that uses the Spotify API to generate playlists based on a users Spotify listening history and current mood.
+Vibez is a web application that utilizes Spotify's API to generate playlists based on a user's choice of genre and a minimum and maximum range of danceability levels (0 - 0.1).
 
 ## Table of Contents
 * [Overview](#overview)<br/>
@@ -51,15 +51,15 @@ Create your database tables:
 ```
 $ python3 model.py
 ```
-Create .gitingore file:
+Create .gitignore file:
 ```
 $ touch .gitignore
 ```
-Access .gitingore file in terminal to ignore config.py file:
+Access .gitignore file in terminal to ignore config.py file:
 ```
 $ nano .gitignore
 ```
-Store config.py file in .gitingore file:
+Store config.py file in .gitignore file:
 ```
 config.py
 ```

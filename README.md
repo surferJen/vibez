@@ -11,7 +11,7 @@ Vibez is a web application that utilizes Spotify's API to generate playlists bas
 
 <a name="overview"/></a>
 ## Overview
-Once a user logs into their account and generates a new playlist, Vibez gathers and stores the playist's history in a PostgreSQL database along with information for three audio features: music genre, minimum danceability, maximum danceability. Playlists are generated requesting pertinent info from Spotify's API. Once the backend receives Spotify's JSON, Vibez integrates the JSON into the Amplitude.js library to showcase its lists of songs and its accompanying shuffle, fast-forward, rewind, scroll, and other convenient functions. In order to display a page of stored playlists, Vibez assimilates interactive, complex visuals rendered by code that is extracted and heavily refactored from the D3.js library. Both Amplitude.js and D3.js require heavy use of jQuery, Javascript, CSS, and HTML. Accessing a stored playlist works similarly as generating a new playlist, except a different Spotify endpoint is requested.
+Once a user logs into their account and generates a new playlist, Vibez gathers and stores the playlist's history in a PostgreSQL database along with information for three audio features: music genre, minimum danceability, maximum danceability. Playlists are generated after requesting pertinent info from Spotify's API. Once the backend receives Spotify's JSON, Vibez integrates the JSON into the front end using the Amplitude.js library to showcase its lists of songs and its accompanying shuffle, skip, adjustable volume, scroll, and other convenient functions. In order to display a page of stored playlists, Vibez assimilates interactive, complex visuals rendered by code that is extracted and heavily refactored from the D3.js library. Both Amplitude.js and D3.js require heavy use of jQuery, Javascript, CSS, and HTML. Accessing a stored playlist works similarly as generating a new playlist, except a different Spotify API endpoint is requested.
 
 <a name="techstack"/></a>
 ## Tech Stack
@@ -71,23 +71,38 @@ Open localhost:5000 on browser.
 
 <a name="demo"/></a>
 ## Demo
-**Log in through Spotify and create your playlist by selecting a mood:**
+**Register a Vibez account:**
 <br/><br/>
-![Homepage](/static/images/readme/homepage.gif)
+![Registration](/static/img/README/register.png)
 <br/>
 
-**Once created, play your playlist through Spotify Web Player or through Moodify:**
+**Log in to Vibez account**
 <br/><br/>
-![Selecting Mood](/static/images/readme/created.gif)
+![Login](/static/imag/README/login.png)
 <br/>
 
-**View playlist and select song to play as well as skip through songs:**
+**View collection of playlists and select unique playlist to play on following page:**
 <br/><br/>
-![View and Play Playlist](/static/images/readme/playlist-player.gif)
+![View Playlists and Select](/static/img/README/select_playlists.png)
+<br/>
+
+**View playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
+<br/><br/>
+![View and Play Songs](/static/img/README/old_songs.png)
+<br/>
+
+**Generate a new playlist (automatically adds to saved playlists page) by selecting choice of genre and minimum and maximum danceability:**
+<br/><br/>
+![Generate New Playlist](/static/img/README/generate_playlist.png)
+<br/>
+
+**View newly generated playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
+<br/><br/>
+![View and Play Songs](/static/img/README/new_songs.gif)
 <br/>
 
 <a name="features"/></a>
 ## Future Features
-* Fine tune algorithm that selects songs
-* Give user's the ability to view all their past mood playlists
-* Option to preview playlist and then save it
+* Allow OAuth authentication for user to save playlists directly to their Spotify account
+* Allow user to delete playlists from their playlists page
+* Give user ability to share playlists with other users of Vibez account 

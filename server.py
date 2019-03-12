@@ -180,12 +180,31 @@ def generate_playlist():
     for track in spotify_info["tracks"]:
         spotify_info_dict = {}
         millis = int(track["duration_ms"])
-        minutes = millis//(1000*60)
+        minutes = millis/(1000*60)
         minutes = int(minutes)
         seconds = (millis % (1000*60)) / 1000
         seconds = int(seconds)
         if seconds == 0:
             seconds = "00"
+        if seconds == 1:
+            seconds = "01"
+        if seconds == 2:
+            seconds = "02"
+        if seconds == 3:
+            seconds = "03"
+        if seconds == 4:
+            seconds = "04"
+        if seconds == 5:
+            seconds = "05"
+        if seconds == 6:
+            seconds = "06"
+        if seconds == 7:
+            seconds = "07"
+        if seconds == 8:
+            seconds = "08"
+        if seconds == 9:
+            seconds = "09"
+        
         track["duration_ms"] = f'{minutes}:{seconds}'
 
         spotify_info_dict["name"] = track["name"]
@@ -263,12 +282,30 @@ def songs():
     for track in saved_spotify_info["tracks"]:
         saved_spotify_info_dict = {}
         millis = int(track["duration_ms"])
-        minutes = millis//(1000*60)
+        minutes = millis/(1000*60)
         minutes = int(minutes)
         seconds = (millis % (1000*60)) / 1000
         seconds = int(seconds)
         if seconds == 0:
             seconds = "00"
+        if seconds == 1:
+            seconds = "01"
+        if seconds == 2:
+            seconds = "02"
+        if seconds == 3:
+            seconds = "03"
+        if seconds == 4:
+            seconds = "04"
+        if seconds == 5:
+            seconds = "05"
+        if seconds == 6:
+            seconds = "06"
+        if seconds == 7:
+            seconds = "07"
+        if seconds == 8:
+            seconds = "08"
+        if seconds == 9:
+            seconds = "09"
         track["duration_ms"] = f'{minutes}:{seconds}'
 
         saved_spotify_info_dict["name"] = track["name"]

@@ -11,11 +11,11 @@ Vibez is a web application that utilizes Spotify's API to generate playlists bas
 
 <a name="overview"/></a>
 ## Overview
-Once a user logs into their account and generates a new playlist, Vibez gathers and stores the playlist's history in a PostgreSQL database along with information for three audio features: music genre, minimum danceability, and maximum danceability. Playlists are generated after requesting pertinent info from Spotify's API. Once the backend receives Spotify's JSON, Vibez integrates the JSON into the frontend using the Amplitude.js library to showcase its lists of songs and its accompanying shuffle, skip, adjustable volume, scroll, and other convenient functions. In order to display a page of stored playlists, Vibez assimilates interactive, complex visuals rendered by code that is extracted and heavily refactored from the D3.js library. Both Amplitude.js and D3.js require heavy use of jQuery, Javascript, CSS, and HTML. Accessing a stored playlist works similarly as generating a new playlist, except a different Spotify API endpoint is requested.
+Once a user logs into their account and generates a new playlist, Vibez gathers and stores the playlist's history in a PostgreSQL database along with information for three audio features: music genre, minimum danceability, and maximum danceability. Playlists are generated after requesting pertinent info from Spotify's API. Once the backend receives Spotify's JSON, Vibez integrates the JSON into the frontend using the Amplitude.js library to showcase its lists of songs and its accompanying shuffle, skip, adjustable volume, scroll, and other convenient functions. In order to display a page of stored playlists, Vibez assimilates interactive, complex visuals rendered by code that is extracted and heavily refactored from the D3.js library. Both Amplitude.js and D3.js require heavy use of jQuery, Javascript, CSS, and HTML. Accessing a stored playlist works similarly to generating a new playlist, except a different Spotify API endpoint is requested.
 
 <a name="techstack"/></a>
 ## Tech Stack
-**Frontend:** Javascript (AJAX, JSON), jQuery, Jinja, HTML, CSS, Bootstrap</br>
+**Frontend:** Javascript (AJAX, JSON), JQuery, Jinja, HTML, CSS, Bootstrap</br>
 **Backend:** Python, Flask, SQLAlchemy, PostgreSQL<br/>
 **Libraries:** D3.js, Amplitude.js<br/>
 **APIs:** Spotify<br/>
@@ -91,7 +91,7 @@ Open localhost:5000 on browser.
 ![View and Play Songs](/static/img/README/old_songs.png)
 <br/>
 
-**Generate a new playlist (automatically adds to saved playlists page) by selecting choice of genre and minimum and maximum danceability:**
+**Generate a new playlist (automatically adds to saved playlists page) by selecting genre and minimum and maximum danceability:**
 <br/><br/>
 ![Generate New Playlist](/static/img/README/generate_playlist.png)
 <br/>

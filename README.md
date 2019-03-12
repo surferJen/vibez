@@ -98,7 +98,7 @@ Open localhost:5000 on browser.
 
 **View newly generated playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
 <br/><br/>
-![View and Play Songs](/static/img/README/new_songs.gif)
+![View and Play Songs](/static/img/README/new_songs.png)
 <br/>
 
 <a name="features"/></a>

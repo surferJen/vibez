@@ -78,7 +78,7 @@ Open localhost:5000 on browser.
 
 **Log in to Vibez account**
 <br/><br/>
-![Login](/static/imag/README/login.png)
+![Login](/static/img/README/login.png)
 <br/>
 
 **View collection of playlists and select unique playlist to play on following page:**

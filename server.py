@@ -140,9 +140,21 @@ def created_playlist():
 def generate_playlist():
     
 
-    spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"].lower(), session["minimum_danceability"], session["maximum_danceability"])
+    original_spotify_info = spotify.base_playlist(spotify.generate_token(), session["genre"].lower(), session["minimum_danceability"], session["maximum_danceability"])
 
 
+    clean_array= []
+
+    index = 0
+    for  track in original_spotify_info["tracks"]:
+        
+        if track["preview_url"] is not None:
+            clean_array.append(track)
+        index += 1
+    
+    spotify_info = {"tracks": clean_array}
+    
+    
     if len(spotify_info.get("tracks")) <= 0:
         flash("Change the search parameters of danceability. No playlist was generated.")
         return redirect("/create")
@@ -155,23 +167,22 @@ def generate_playlist():
 
     #store songs into Song database and song-playlist data into SongPlaylist database
         for track in spotify_info["tracks"]:
-
-        #if Song database is empty, add generated song as new song in the database 
-            if len(db.session.query(Song).all()) <= 0:
-                song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
-                db.session.add(song)
+            #if Song database is empty, add generated song as new song in the database 
+                if len(db.session.query(Song).all()) <= 0:
+                    song = Song(track_id=track["id"], track_title=track["name"], artist=[artist["name"] for artist in track["artists"]])
+                    db.session.add(song)
+                    db.session.commit()
+            #if a song(s) exists in the database, check to see if there is a match with generated song
+            #and existing song(s) match. If there is no match, add generated song as new song in the database.
+            #Both if statements check to make sure new songs that are added into database do not already
+            #exist in the database.
+                if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
+                        song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
+                        db.session.add(song)
+                        db.session.commit()
+                songplaylist = SongPlaylist(track_id= track["id"], playlist_id= playlist.playlist_id)
+                db.session.add(songplaylist)
                 db.session.commit()
-        #if a song(s) exists in the database, check to see if there is a match with generated song
-        #and existing song(s) match. If there is no match, add generated song as new song in the database.
-        #Both if statements check to make sure new songs that are added into database do not already
-        #exist in the database.
-            if len(db.session.query(Song).filter(Song.track_id == track["id"]).all()) <= 0:
-                song = Song(track_id= track["id"] , track_title= track["name"] , artist= [artist["name"] for artist in track["artists"]])
-                db.session.add(song)
-                db.session.commit()
-            songplaylist = SongPlaylist(track_id= track["id"], playlist_id= playlist.playlist_id)
-            db.session.add(songplaylist)
-            db.session.commit()
 
     #reveal newly generated playlist on generate_playlist.html page based on stored session from user input above
 
@@ -208,11 +219,11 @@ def generate_playlist():
         track["duration_ms"] = f'{minutes}:{seconds}'
 
         spotify_info_dict["name"] = track["name"]
-        spotify_info_dict["artist"] = [
-            f' {artist["name"]}' for artist in track["artists"]]
+        spotify_info_dict["artist"] = [f' {artist["name"]}' for artist in track["artists"]]
         spotify_info_dict["album"] = track["album"]["name"]
         spotify_info_dict["url"] = track["preview_url"]
         spotify_info_dict["cover_art_url"] = track["album"]["images"][0]["url"]
+        
         spotify_info_list.append(spotify_info_dict)
 
     fin_spotify_dict = {}

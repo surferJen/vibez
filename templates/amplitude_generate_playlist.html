@@ -5,11 +5,11 @@
 	<head>
 		<title>Your Playlist!</title>
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/foundation.min.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
 		<script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 		<script type="text/javascript" src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename='js/functions.js') }}"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/amplitudejs@4.0.0/dist/amplitude.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename='js/functions.js') }}"></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/app.css') }}">
 		
 	</head>
 	<body>
@@ -109,7 +109,7 @@
 				  <div class="large-6 medium-6 small-12 cell" id="amplitude-right">
                   
                   {% for track in spotify_info.tracks %}
-				    <div class="song amplitude-song-container amplitude-play-pause" data-amplitude-song-index="0">
+				    <div class="song amplitude-song-container amplitude-play-pause" data-amplitude-song-index="{{loop.index0}}">
 				      <div class="song-now-playing-icon-container">
 				        <div class="play-button-container">
 

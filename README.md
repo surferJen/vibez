@@ -7,7 +7,7 @@ Vibez is a web application that utilizes Spotify's API to generate playlists bas
 * [Tech Stack](#techstack)<br/>
 * [Setup/Installation](#installation)<br/>
 * [Demo](#demo)<br/>
-* [Future Features](#future)
+* [Future Features](#features)
 
 <a name="overview"/></a>
 ## Overview

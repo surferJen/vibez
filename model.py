@@ -54,9 +54,9 @@ class Song(db.Model):
 
     __tablename__ = "songs"
 
-    track_id = db.Column(db.String(100), primary_key=True)
-    track_title = db.Column(db.String(200), nullable=False)
-    artist = db.Column(db.String(200), nullable=False)
+    track_id = db.Column(db.String(300), primary_key=True)
+    track_title = db.Column(db.String(400), nullable=False)
+    artist = db.Column(db.String(300), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed"""
@@ -72,7 +72,7 @@ class SongPlaylist(db.Model):
     __tablename__ = "songs_playlists"
 
     song_playlist_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    track_id = db.Column(db.String(100), db.ForeignKey('songs.track_id'), nullable=False)
+    track_id = db.Column(db.String(300), db.ForeignKey('songs.track_id'), nullable=False)
     playlist_id = db.Column(db.Integer, db.ForeignKey('playlists.playlist_id'), nullable=False)
 
 

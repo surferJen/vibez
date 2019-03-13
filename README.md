@@ -1,6 +1,6 @@
 # Vibez
 
-Vibez is a web application that utilizes Spotify's API to generate playlists based on a user's choice of genre and a minimum and maximum range of danceability levels (0 - 0.1).
+Vibez is a web application that utilizes Spotify's API to generate playlists based on a user's choice of genre and a minimum and maximum range of danceability levels (0 - 1).
 
 ## Table of Contents
 * [Overview](#overview)<br/>

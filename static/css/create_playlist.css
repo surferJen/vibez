@@ -31,6 +31,9 @@ h1 {
 form {
   text-align:center;
 }
+label {
+  font-size: x-large;
+}
 * { box-sizing: border-box; }
 body {
   font: 16px Arial; 

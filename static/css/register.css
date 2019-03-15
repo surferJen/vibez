@@ -30,6 +30,9 @@ h1 {
 form {
   text-align:center;
 }
+label {
+  font-size: x-large;
+}
 #turntable{
   position:relative;
   width:560px;

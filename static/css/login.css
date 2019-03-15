@@ -13,11 +13,14 @@ html,body {
     margin: 0;
     box-sizing: border-box;
     font-family: Helvetica, Calibri, Roboto, Open Sans, sans-serif -webkit-backface-visibility: hidden;
-    height: 100%;
+    height: 105%;
     width: 100%;
     color: white;
     background-color: #000000;
     background-image: linear-gradient(147deg, #000000 0%, #2c3e50 74%);   
+}
+label{
+  font-size: x-large;
 }
 .btn.btn-login {
   color:white;

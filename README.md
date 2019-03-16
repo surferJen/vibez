@@ -76,29 +76,19 @@ Open localhost:5000 on browser.
 ![Registration](/static/img/README/register.png)
 <br/>
 
-**Log in to Vibez account:**
-<br/><br/>
-![Login](/static/img/README/login.png)
-<br/>
-
-**View collection of playlists and select unique playlist to play on following page:**
-<br/><br/>
-![View Playlists and Select](/static/img/README/select_playlists.png)
-<br/>
-
-**View playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
-<br/><br/>
-![View and Play Songs](/static/img/README/old_songs.png)
-<br/>
-
 **Generate a new playlist (automatically adds to saved playlists page) by selecting genre and minimum and maximum danceability:**
 <br/><br/>
-![Generate New Playlist](/static/img/README/generate_playlist.png)
+![Generate New Playlist](/static/img/README/generate_playlist.gif)
 <br/>
 
 **View newly generated playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
 <br/><br/>
-![View and Play Songs](/static/img/README/new_songs.png)
+![View and Play Songs](/static/img/README/songs.gif)
+<br/>
+
+**View collection of playlists and select unique playlist to play on following page:**
+<br/><br/>
+![View Playlists and Select](/static/img/README/select_playlists.gif)
 <br/>
 
 <a name="features"/></a>

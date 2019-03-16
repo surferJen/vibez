@@ -72,17 +72,17 @@ Open localhost:5000 on browser.
 <a name="demo"/></a>
 ## Demo
 
-**Generate a new playlist (automatically adds to saved playlists page) by selecting genre and minimum and maximum danceability:**
+**Generate a new playlist (automatically saves to playlists page) by selecting genre and minimum and maximum danceability:**
 <br/><br/>
 ![Generate New Playlist](/static/img/README/generate_playlist.gif)
 <br/>
 
-**View newly generated playlist and select song to play as well as shuffle and skip through and adjust volume of songs:**
+**View newly generated playlist and select song to play as well as shuffle, skip through and adjust volume of songs:**
 <br/><br/>
 ![View and Play Songs](/static/img/README/songs.gif)
 <br/>
 
-**View collection of playlists and select unique playlist to play on following page:**
+**View collection of playlists and select one to play on following page:**
 <br/><br/>
 ![View Playlists and Select](/static/img/README/select_playlists.gif)
 <br/>

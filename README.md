@@ -71,10 +71,6 @@ Open localhost:5000 on browser.
 
 <a name="demo"/></a>
 ## Demo
-**Register a Vibez account:**
-<br/><br/>
-![Registration](/static/img/README/register.png)
-<br/>
 
 **Generate a new playlist (automatically adds to saved playlists page) by selecting genre and minimum and maximum danceability:**
 <br/><br/>
